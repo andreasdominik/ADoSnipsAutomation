@@ -11,36 +11,36 @@
 #   as Symbols (Julia-style)
 #
 """
-function templateAction(topic, payload)
+    automateAction(topic, payload)
 
-    Dummyaction for the template.
+Schedule triggers for device automation.
 """
-function templateAction(topic, payload)
+function automateAction(topic, payload)
 
     # log:
-    Snips.printLog("action templateAction() started.")
-    Snips.printDebug("""Intent: $(Snips.getIntent())""")
+    Snips.printLog("action automateAction() started.")
 
-    # get my name from config.ini:
+    # get times for start and end:
     #
-    myName = Snips.getConfig(INI_MY_NAME)
-    if myName == nothing
-        Snips.publishEndSession(:noname)
-        return false
-    end
-
-    # get the word to repeat from slot:
+    (startDate, endDate) = readDatesFromSlots(payload)
     #
-    word = Snips.extractSlotValue(payload, SLOT_WORD)
-    if word == nothing
-        Snips.publishEndSession(:dunno)
-        return true
-    end
-
-    # say who you are:
+    # myName = Snips.getConfig(INI_MY_NAME)
+    # if myName == nothing
+    #     Snips.publishEndSession(:noname)
+    #     return false
+    # end
     #
-    Snips.publishSay(:bravo)
-    Snips.publishEndSession("""$(Snips.langText(:iam)) $myName.
-                            $(Snips.langText(:isay)) $word""")
-    return true
+    # # get the word to repeat from slot:
+    # #
+    # word = Snips.extractSlotValue(payload, SLOT_WORD)
+    # if word == nothing
+    #     Snips.publishEndSession(:dunno)
+    #     return true
+    # end
+    #
+    # # say who you are:
+    # #
+    # Snips.publishSay(:bravo)
+    Snips.publishEndSession("ende")
+    return false
 end

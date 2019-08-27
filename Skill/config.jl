@@ -13,7 +13,7 @@ const LANG = (lang != nothing) ? lang : "de"
 # set CONTINUE_WO_HOTWORD to true to be able to chain
 # commands without need of a hotword in between:
 #
-const CONTINUE_WO_HOTWORD = true
+const CONTINUE_WO_HOTWORD = false
 const DEVELOPER_NAME = "andreasdominik"
 Snips.setDeveloperName(DEVELOPER_NAME)
 Snips.setModule(@__MODULE__)
@@ -21,11 +21,18 @@ Snips.setModule(@__MODULE__)
 # Slots:
 # Name of slots to be extracted from intents:
 #
-const SLOT_WORD = "a_word"
+const SLOT_DATE = "StartEndDate"
 
 # name of entry in config.ini:
 #
-const INI_MY_NAME = "my_name"
+const INI_DEVICES = "controlled_devices"    # list of devices
+const INI_TIME = "time"                     # postfix: start-, end-, fuzzy-time
+const INI_MODE = "mode"                     # postfix: one of on, once, random
+                                            #    on: only on
+                                            #    once: fuzzy on and off
+                                            #    random: multiple fuzzy on and off
+INI_ON_TIME = "on_duration"                 # postfix: time and fuzzy of on-times
+INI_ON_TIME = "off_duration"                # postfix: time and fuzzy of off-times
 
 #
 # link between actions and intents:
@@ -38,9 +45,7 @@ const INI_MY_NAME = "my_name"
 # Language-dependent settings:
 #
 if LANG == "de"
-    Snips.registerIntentAction("pleaseRepeatDE", templateAction)
-elseif LANG == "en"
-    Snips.registerIntentAction("pleaseRepeatEN", templateAction)
+    Snips.registerIntentAction("AutomateDE", automateAction)
 else
-    Snips.registerIntentAction("pleaseRepeatEN", templateAction)
+    Snips.registerIntentAction("AutomateDE", automateAction)
 end
