@@ -23,6 +23,31 @@ function automateAction(topic, payload)
     # get times for start and end:
     #
     (startDate, endDate) = readDatesFromSlots(payload)
+    if startDate == nothing
+        Snips.publishEndSession(:error_no_dates)
+        return false
+    end
+    if !Snips.isInConfig(INI_DEVICES)
+        Snips.printLog("ERROR: no devices found in config.ini!")
+        Snips.publishEndSession(:error_no_devices)
+        return false
+    end
+
+    # work on all devices
+    #
+    for device in Snips.getConfig(INI_DEVICES)
+        if !checkDeviceConfig(deoice)
+            Snips.publishEndSession(:error_device_config)
+            return false
+        end
+
+
+
+
+
+
+
+
     #
     # myName = Snips.getConfig(INI_MY_NAME)
     # if myName == nothing
@@ -43,4 +68,70 @@ function automateAction(topic, payload)
     # Snips.publishSay(:bravo)
     Snips.publishEndSession("ende")
     return false
+end
+
+
+function checkDeviceConfig(device)
+
+    if !Snips.isConfigValid("$device:$INI_MODE", regex = r"(on|once|random)")
+        Snips.printLog("ERROR: no mode for device $device found in config.ini!")
+        return false
+    end
+    if !Snips.isConfigValid("$device:$INI_NAME")
+        Snips.printLog("ERROR: no name for device $device found in config.ini!")
+        return false
+    end
+
+    if Snips.getConfig("$device:$INI_MODE") == "on"
+        if !Snips.isConfigValid("$device:$INI_TIME", regex = r"^\d\d:\d\d$")
+            Snips.printLog("ERROR: no time for device $device found in config.ini!")
+            return false
+        end
+
+    elseif Snips.getConfig("$device:$INI_MODE") == "once"
+        if !checkTripleTime("$device:$INI_TIME")
+            Snips.printLog("ERROR: no time for device $device found in config.ini!")
+            return false
+        end
+
+    elseif Snips.getConfig("$device:$INI_MODE") == "random"
+        if !checkTripleTime("$device:$INI_TIME") ||
+           !checkDubleTime("$device:$INI_ON") ||
+           !checkDubleTime("$device:$INI_OFF")
+            Snips.printLog("ERROR: no time for device $device found in config.ini!")
+            return false
+        end
+    else
+        Snips.printLog("ERROR: undefined mode for device $device found in config.ini!")
+        return false
+    end
+
+    return true
+end
+
+
+
+
+
+
+
+
+
+function checkTripleTime(param)
+
+    return Snips.isInConfig(param) &&
+           Snips.getConfig(param) isa AbstactArray &&
+           length(Snips.getConfig(param)) == 3 &&
+           occursin(r"^\d\d:\d\d$", Snips.getConfig(param)[1]) &&
+           occursin(r"^\d\d:\d\d$", Snips.getConfig(param)[2]) &&
+           occursin(r"^\d\d:\d\d$", Snips.getConfig(param)[3])))
+end
+
+function checkDubleTime(param)
+
+    return Snips.isInConfig(param) &&
+           Snips.getConfig(param) isa AbstactArray &&
+           length(Snips.getConfig(param)) == 3 &&
+           occursin(r"^\d\d:\d\d$", Snips.getConfig(param)[1]) &&
+           occursin(r"^\d\d:\d\d$", Snips.getConfig(param)[2]) 
 end

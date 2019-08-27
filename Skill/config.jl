@@ -26,13 +26,14 @@ const SLOT_DATE = "StartEndDate"
 # name of entry in config.ini:
 #
 const INI_DEVICES = "controlled_devices"    # list of devices
+const INI_NAME = "name"                     # postfix: device name with article
 const INI_TIME = "time"                     # postfix: start-, end-, fuzzy-time
 const INI_MODE = "mode"                     # postfix: one of on, once, random
                                             #    on: only on
                                             #    once: fuzzy on and off
                                             #    random: multiple fuzzy on and off
-INI_ON_TIME = "on_duration"                 # postfix: time and fuzzy of on-times
-INI_ON_TIME = "off_duration"                # postfix: time and fuzzy of off-times
+const INI_ON_TIME = "on_duration"           # postfix: time and fuzzy of on-times
+const INI_OFF = "off_duration"              # postfix: time and fuzzy of off-times
 
 #
 # link between actions and intents:
