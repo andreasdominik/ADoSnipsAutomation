@@ -3,6 +3,37 @@
 # skill-actions:
 #
 
+function scheduleOnDevice(device, startDate, endDate)
+
+    planDate = startDate
+    if planDate < Dates.now()
+        planDate = Dates.now()
+    end
+
+    # step days:
+    #
+    while planDate <= endDate
+        onTime = readFuzzyTime("$device:$INI_TIME")
+
+
+        planDate += Dates.Day(1)
+    end
+
+
+function readFuzzyTime(param)
+
+    times = Snips.getConfig(param)
+    onTime = Dates.Time(times[1])
+    onFuzzy = Dates.Time(times[2])
+
+    fuzzyMins = Dates.value(Dates.Minute(onFuzzy))
+    onTime += Dates.Minute(rand(-fuzzyMins:fuzzyMins))
+    return onTime
+end
+
+
+
+
 function readDatesFromSlots(payload)
 
     startDate = nothing
@@ -36,10 +67,14 @@ function readDatesFromSlots(payload)
         Snips.printLog("ERROR: Not dates in slot!")
         startDate, endDate = nothing, nothing
     else
+        startDate = Dates.Date(startDate)
+        endDate = Dates.Date(endDate)
+
         if startDate > endDate
             startDate, endDate = endDate, startDate
         end
     end
+
 
     return startDate, endDate
 end

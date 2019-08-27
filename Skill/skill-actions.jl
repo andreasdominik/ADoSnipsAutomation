@@ -36,13 +36,18 @@ function automateAction(topic, payload)
     # work on all devices
     #
     for device in Snips.getConfig(INI_DEVICES)
-        if !checkDeviceConfig(deoice)
+        if !checkDeviceConfig(device)
             Snips.publishEndSession(:error_device_config)
             return false
         end
 
+        if Snips.getConfig("$device:$INI_MODE") == "on"
+            scheduleOnDevice(device, startDate, endDate)
+        end
+    end
 
 
+end
 
 
 
@@ -71,6 +76,13 @@ function automateAction(topic, payload)
 end
 
 
+
+#
+#
+# check ini params:
+#
+#
+
 function checkDeviceConfig(device)
 
     if !Snips.isConfigValid("$device:$INI_MODE", regex = r"(on|once|random)")
@@ -83,7 +95,7 @@ function checkDeviceConfig(device)
     end
 
     if Snips.getConfig("$device:$INI_MODE") == "on"
-        if !Snips.isConfigValid("$device:$INI_TIME", regex = r"^\d\d:\d\d$")
+        if !checkDubleTime("$device:$INI_TIME")
             Snips.printLog("ERROR: no time for device $device found in config.ini!")
             return false
         end
@@ -133,5 +145,5 @@ function checkDubleTime(param)
            Snips.getConfig(param) isa AbstactArray &&
            length(Snips.getConfig(param)) == 3 &&
            occursin(r"^\d\d:\d\d$", Snips.getConfig(param)[1]) &&
-           occursin(r"^\d\d:\d\d$", Snips.getConfig(param)[2]) 
+           occursin(r"^\d\d:\d\d$", Snips.getConfig(param)[2])
 end
