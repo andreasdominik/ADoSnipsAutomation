@@ -12,14 +12,21 @@ function scheduleOnDevice(device, startDate, endDate)
 
     # step days:
     #
+    actions = []
     while planDate <= endDate
         onTime = readFuzzyTime("$device:$INI_TIME")
+        if !(planDate == startDate && onTime < Dates.now())
+            push!(actions, Snips.schedulerMakeAction(onTime, ))
+
+
 
 
         planDate += Dates.Day(1)
     end
 
-
+"""
+Read a time from duble as first +- second
+"""
 function readFuzzyTime(param)
 
     times = Snips.getConfig(param)

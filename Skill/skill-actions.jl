@@ -93,6 +93,15 @@ function checkDeviceConfig(device)
         Snips.printLog("ERROR: no name for device $device found in config.ini!")
         return false
     end
+    if !Snips.isConfigValid("$device:$INI_TOPIC", r"^qnd/trigger/")
+        Snips.printLog("ERROR: no topic for device $device found in config.ini!")
+        return false
+    end
+    if !Snips.isConfigValid("$device:$INI_TRIGGR", r"\.trigger") ||
+       !isfile("$TRIGGER_DIR/$(Snips.getConfig("$device:$INI_TRIGGR"))")
+        Snips.printLog("ERROR: no trigger file for device $device found in config.ini!")
+        return false
+    end
 
     if Snips.getConfig("$device:$INI_MODE") == "on"
         if !checkDubleTime("$device:$INI_TIME")

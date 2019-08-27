@@ -18,6 +18,8 @@ const DEVELOPER_NAME = "andreasdominik"
 Snips.setDeveloperName(DEVELOPER_NAME)
 Snips.setModule(@__MODULE__)
 
+const TRIGGER_DIR ="$(Snips.getAppDir())/Trigger"
+
 # Slots:
 # Name of slots to be extracted from intents:
 #
@@ -34,6 +36,8 @@ const INI_MODE = "mode"                     # postfix: one of on, once, random
                                             #    random: multiple fuzzy on and off
 const INI_ON_TIME = "on_duration"           # postfix: time and fuzzy of on-times
 const INI_OFF = "off_duration"              # postfix: time and fuzzy of off-times
+const INI_TRIGGER = "trigger"               # postfix: filename of trigger
+const INI_TRIGGER = "topic"                 # postfix: filename of trigger
 
 #
 # link between actions and intents:
