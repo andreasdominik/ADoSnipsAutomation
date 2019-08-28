@@ -97,11 +97,19 @@ function checkDeviceConfig(device)
         Snips.printLog("ERROR: no topic for device $device found in config.ini!")
         return false
     end
-    if !Snips.isConfigValid("$device:$INI_TRIGGR", r"\.trigger") ||
-       !isfile("$TRIGGER_DIR/$(Snips.getConfig("$device:$INI_TRIGGR"))")
-        Snips.printLog("ERROR: no trigger file for device $device found in config.ini!")
+    if !Snips.isConfigValid("$device:$INI_TRIGGER_ON", r"\ON.trigger") ||
+       !isfile("$TRIGGER_DIR/$(Snips.getConfig("$device:$INI_TRIGGER_ON"))") ||
+       !Snips.isConfigValid("$device:$INI_TRIGGER_OFF", r"\OFF.trigger") ||
+       !isfile("$TRIGGER_DIR/$(Snips.getConfig("$device:$INI_TRIGGER_OFF"))")
+        Snips.printLog("ERROR: trigger file for device $device missing!")
         return false
     end
+    if (length(Snips.tryParseJSONfile("$TRIGGER_DIR/$(Snips.getConfig("$device:$INI_TRIGGER_ON"))")) < 1) ||
+        (length(Snips.tryParseJSONfile("$TRIGGER_DIR/$(Snips.getConfig("$device:$INI_TRIGGER_OFF"))")) < 1) ||
+        Snips.printLog("ERROR: trigger file for device $device is not valid!")
+        return false
+    end
+
 
     if Snips.getConfig("$device:$INI_MODE") == "on"
         if !checkDubleTime("$device:$INI_TIME")

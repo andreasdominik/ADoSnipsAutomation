@@ -36,7 +36,8 @@ const INI_MODE = "mode"                     # postfix: one of on, once, random
                                             #    random: multiple fuzzy on and off
 const INI_ON_TIME = "on_duration"           # postfix: time and fuzzy of on-times
 const INI_OFF = "off_duration"              # postfix: time and fuzzy of off-times
-const INI_TRIGGER = "trigger"               # postfix: filename of trigger
+const INI_TRIGGER_ON = "trigger_on"         # postfix: filename of trigger
+const INI_TRIGGER_OFF = "trigger_off"       # postfix: filename of trigger
 const INI_TRIGGER = "topic"                 # postfix: filename of trigger
 
 #
