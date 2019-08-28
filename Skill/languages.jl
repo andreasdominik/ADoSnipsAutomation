@@ -1,6 +1,11 @@
 Snips.addText("de", :error_no_dates, "Ich konnte Start- und Enddatum nicht verstehen")
 Snips.addText("de", :error_no_devices, "Ich konnte die Geräte nicht aus der Konfiguartionsdatei lesen!")
 Snips.addText("de", :error_device_config, "Ich konnte die Geräte nicht konfigurieren!")
+Snips.addText("de", :i_start_from, "Ich starte die Automatisierung am")
+Snips.addText("de", :until, "bis")
+Snips.addText("de", :ask_device_1, "Soll")
+Snips.addText("de", :ask_device_2, "automatisch gesteuert werden?")
+Snips.addText("de", :skipped, "wird nicht gesteuert")
 
 Snips.addText("de", :i_can, "Ich konnte")
 Snips.addText("de", :not_config, "nicht konfigurieren!")

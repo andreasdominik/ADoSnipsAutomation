@@ -37,19 +37,34 @@ function automateAction(topic, payload)
         return false
     end
 
+    Snips.publishSay("""$(Snips.langText(:i_start_from)) $(Snips.readableDate(startDate))
+                        $(Snips.langText(:until)) $(Snips.readableDate(endDate))"""
+
     # work on all devices
     #
-    Snips.printDebug("devices: $(Snips.getConfig(INI_DEVICES))")
-    Snips.printDebug("devices: $(Snips.getConfig(INI_DEVICES, multiple=true))")
     for device in Snips.getConfig(INI_DEVICES, multiple=true)
-        if !checkDeviceConfig(device)
-            Snips.publishEndSession(:error_device_config)
-            return false
-        end
 
-        if Snips.getConfig("$device:$INI_MODE") == "once_on"
-            scheduleOnDevice(device, startDate, endDate)
-        end
+        deviceName = Snips.getConfig("$device:$INI_NAME")
+        # if !Snips.askYesOrNo(
+        #    "$(Snips.langText(:ask_device_1)) $deviceName $(Snips.langText(:ask_device_2))")
+        #
+        #    Snips.publishSay("""$deviceName $(Snips.langText(:skipped))""")
+
+       # else
+            if !checkDeviceConfig(device)
+                Snips.publishEndSession(:error_device_config)
+                return false
+            end
+
+
+            if Snips.getConfig("$device:$INI_MODE") == "once_on"
+                scheduleOnDevice(device, startDate, endDate)
+            end
+
+            if Snips.getConfig("$device:$INI_MODE") == "once_on_off"
+                scheduleOnOffDevice(device, startDate, endDate)
+            end
+        # end
     end
 
 
