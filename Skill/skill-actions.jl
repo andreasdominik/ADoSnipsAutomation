@@ -38,7 +38,7 @@ function automateAction(topic, payload)
     end
 
     Snips.publishSay("""$(Snips.langText(:i_start_from)) $(Snips.readableDate(startDate))
-                        $(Snips.langText(:until)) $(Snips.readableDate(endDate))"""
+                        $(Snips.langText(:until)) $(Snips.readableDate(endDate))""")
 
     # work on all devices
     #
@@ -63,6 +63,10 @@ function automateAction(topic, payload)
 
             if Snips.getConfig("$device:$INI_MODE") == "once_on_off"
                 scheduleOnOffDevice(device, startDate, endDate)
+            end
+
+            if Snips.getConfig("$device:$INI_MODE") == "random_series"
+                scheduleRandomDevice(device, startDate, endDate)
             end
         # end
     end
@@ -143,8 +147,8 @@ function checkDeviceConfig(device)
         end
 
     elseif Snips.getConfig("$device:$INI_MODE") == "random_series"
-        if !checkTripleTime("$device:$INI_TIME_ON") ||
-           !checkTripleTime("$device:$INI_TIME_OFF") ||
+        if !checkDubleTime("$device:$INI_TIME_ON") ||
+           !checkDubleTime("$device:$INI_TIME_OFF") ||
            !checkDubleTime("$device:$INI_DURATION_ON") ||
            !checkDubleTime("$device:$INI_DURATION_OFF")
             Snips.printLog("ERROR: no time for device $device found in config.ini!")

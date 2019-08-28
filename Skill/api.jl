@@ -6,7 +6,9 @@
 function scheduleOnDevice(device, startDate, endDate)
 
     planDate = Dates.Date(max(startDate, Dates.today()))
-    triggerON = Snips.tryParseJSONfile("$TRIGGER_DIR/$(Snips.getConfig("$device:$INI_TRIGGER_ON"))")
+    triggerON = Snips.tryParseJSONfile("$TRIGGER_DIR/$(Snips.getConfig("$device:$INI_TRIGGER_ON"))",
+                            quiet = true)
+    updateTrigger!(triggerON)
     topic = Snips.getConfig("$device:$INI_TOPIC")
 
     # step days:
@@ -25,10 +27,10 @@ function scheduleOnDevice(device, startDate, endDate)
     while planDate <= endDate
         onDateTime = readFuzzyTime("$device:$INI_TIME_ON", planDate)
 
-        if !(onDateTime < Dates.now())
+        if (onDateTime > Dates.now())
             push!(actions, Snips.schedulerMakeAction(
                                     onDateTime, topic, triggerON))
-            Snips.printLog("    ON at $onDateTime")
+            Snips.printLog("    ON  at $onDateTime")
         end
         planDate += Dates.Day(daystep)
     end
@@ -39,28 +41,136 @@ function scheduleOnDevice(device, startDate, endDate)
     end
 end
 
+
+
+function scheduleOnOffDevice(device, startDate, endDate)
+
+    planDate = Dates.Date(max(startDate, Dates.today()))
+    triggerON = Snips.tryParseJSONfile("$TRIGGER_DIR/$(Snips.getConfig("$device:$INI_TRIGGER_ON"))",
+                            quiet = true)
+    triggerOFF = Snips.tryParseJSONfile("$TRIGGER_DIR/$(Snips.getConfig("$device:$INI_TRIGGER_OFF"))",
+                            quiet = true)
+    updateTrigger!(triggerON)
+    updateTrigger!(triggerOFF)
+    topic = Snips.getConfig("$device:$INI_TOPIC")
+
+    # step days:
+    #
+    if Snips.isConfigValid("$device:$INI_EVERY_DAY", regex = r"^[0-9]+$")
+        daystep = tryparse(Int, Snips.getConfig("$device:$INI_EVERY_DAY"))
+        if daystep == nothing
+            daystep = 1
+        end
+    else
+        daystep = 1
+    end
+
+    Snips.printLog("Planning schedules for device $device from $startDate to $endDate")
+    actions = []
+    while planDate <= endDate
+        onDateTime = readFuzzyTime("$device:$INI_TIME_ON", planDate)
+        offDateTime = readFuzzyTime("$device:$INI_TIME_OFF", planDate)
+
+        if (onDateTime > Dates.now()) && (onDateTime < offDateTime)
+            push!(actions, Snips.schedulerMakeAction(
+                                    onDateTime, topic, triggerON))
+            Snips.printLog("    ON  at $onDateTime")
+
+            push!(actions, Snips.schedulerMakeAction(
+                                    offDateTime, topic, triggerOFF))
+            Snips.printLog("    OFF at $offDateTime")
+        end
+        planDate += Dates.Day(daystep)
+    end
+
+    if length(actions) > 1
+        Snips.schedulerAddActions(actions)
+        sleep(2)  # wait to prevent to fast sequence of triggers
+    end
+end
+
+
+
+function scheduleRandomDevice(device, startDate, endDate)
+
+    planDate = Dates.Date(max(startDate, Dates.today()))
+    triggerON = Snips.tryParseJSONfile("$TRIGGER_DIR/$(Snips.getConfig("$device:$INI_TRIGGER_ON"))",
+                            quiet = true)
+    triggerOFF = Snips.tryParseJSONfile("$TRIGGER_DIR/$(Snips.getConfig("$device:$INI_TRIGGER_OFF"))",
+                            quiet = true)
+    updateTrigger!(triggerON)
+    updateTrigger!(triggerOFF)
+    topic = Snips.getConfig("$device:$INI_TOPIC")
+
+    # step days:
+    #
+    if Snips.isConfigValid("$device:$INI_EVERY_DAY", regex = r"^[0-9]+$")
+        daystep = tryparse(Int, Snips.getConfig("$device:$INI_EVERY_DAY"))
+        if daystep == nothing
+            daystep = 1
+        end
+    else
+        daystep = 1
+    end
+
+    Snips.printLog("Planning schedules for device $device from $startDate to $endDate")
+    actions = []
+    while planDate <= endDate
+        onDateTime = readFuzzyTime("$device:$INI_TIME_ON", planDate)
+        offDateTime = readFuzzyTime("$device:$INI_TIME_OFF", planDate)
+
+        nextOn = onDateTime
+        nextOff = readFuzzyTime("$device:$INI_DURATION_ON", nextOn)
+
+        while nextOn < offDateTime
+            if (nextOn > Dates.now()) && (nextOn < nextOff)
+                push!(actions, Snips.schedulerMakeAction(
+                                        nextOn, topic, triggerON))
+                Snips.printLog("    ON  at $nextOn")
+
+                push!(actions, Snips.schedulerMakeAction(
+                                        nextOff, topic, triggerOFF))
+                Snips.printLog("    OFF at $nextOff")
+            end
+            nextOn = readFuzzyTime("$device:$INI_DURATION_OFF", nextOff)
+            nextOff = readFuzzyTime("$device:$INI_DURATION_ON", nextOn)
+        end
+        planDate += Dates.Day(daystep)
+    end
+
+    if length(actions) > 1
+        Snips.schedulerAddActions(actions)
+        sleep(2)  # wait to prevent to fast sequence of triggers
+    end
+end
+
+
+
 """
 Read a time from duble as first +- second
 If returnDateTime == true, an absolute DateTime is returned
 if false,  only HH:MM is returned.
 """
-function readFuzzyTime(param, planDate; returnDateTime = true)
+function readFuzzyTime(param, planDate)
 
     times = Snips.getConfig(param)
     onTime = Dates.Time(times[1])     # time
     onFuzzy = Dates.Time(times[2])    # fuzzy
 
-    onTimeDate = Dates.DateTime(planDate + onTime)
+    planDateTime = Dates.DateTime(planDate)
+    onTimeMins = Dates.value(Dates.Minute(onTime)) +
+                 Dates.value(Dates.Hour(onTime)) * 60
+    onTimeMins = Dates.Minute(onTimeMins)
+    # onTimeDate = Dates.DateTime(planDate + onTime)
 
     fuzzyMins = Dates.value(Dates.Minute(onFuzzy)) +
                 Dates.value(Dates.Hour(onFuzzy)) * 60
     ΔMins = Dates.Minute(rand(-fuzzyMins:fuzzyMins))
-    onTimeDate += ΔMins
-    if returnDateTime
-        return onTimeDate
-    else
-        return Dates.Time(onTimeDate)
-    end
+    onTimeDate = planDateTime + ΔMins + onTimeMins
+
+    Snips.printDebug("Fuzzy: $onTime, $onFuzzy >> $onTimeDate")
+
+    return onTimeDate
 end
 
 
@@ -117,4 +227,11 @@ function readDatesFromSlots(payload)
 
 
     return startDate, endDate
+end
+
+
+function updateTrigger!(trigger)
+
+    trigger[:time] = "$(Dates.now())"
+    trigger[:origin] = "ADoSnipsAutomation"
 end
