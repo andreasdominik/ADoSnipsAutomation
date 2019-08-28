@@ -27,6 +27,10 @@ function automateAction(topic, payload)
         Snips.publishEndSession(:error_no_dates)
         return false
     end
+    # read config again to refresh configuration:
+    #
+    Snips.readConfig("$APP_DIR")
+
     if !Snips.isInConfig(INI_DEVICES)
         Snips.printLog("ERROR: no devices found in config.ini!")
         Snips.publishEndSession(:error_no_devices)
@@ -35,19 +39,20 @@ function automateAction(topic, payload)
 
     # work on all devices
     #
-    for device in Snips.getConfig(INI_DEVICES)
+    Snips.printDebug("devices: $(Snips.getConfig(INI_DEVICES))")
+    Snips.printDebug("devices: $(Snips.getConfig(INI_DEVICES, multiple=true))")
+    for device in Snips.getConfig(INI_DEVICES, multiple=true)
         if !checkDeviceConfig(device)
             Snips.publishEndSession(:error_device_config)
             return false
         end
 
-        if Snips.getConfig("$device:$INI_MODE") == "on"
+        if Snips.getConfig("$device:$INI_MODE") == "once_on"
             scheduleOnDevice(device, startDate, endDate)
         end
     end
 
 
-end
 
 
 
@@ -93,40 +98,40 @@ function checkDeviceConfig(device)
         Snips.printLog("ERROR: no name for device $device found in config.ini!")
         return false
     end
-    if !Snips.isConfigValid("$device:$INI_TOPIC", r"^qnd/trigger/")
+    if !Snips.isConfigValid("$device:$INI_TOPIC", regex = r"^qnd/trigger/")
         Snips.printLog("ERROR: no topic for device $device found in config.ini!")
         return false
     end
-    if !Snips.isConfigValid("$device:$INI_TRIGGER_ON", r"\ON.trigger") ||
+    if !Snips.isConfigValid("$device:$INI_TRIGGER_ON", regex = r"ON\.trigger") ||
        !isfile("$TRIGGER_DIR/$(Snips.getConfig("$device:$INI_TRIGGER_ON"))") ||
-       !Snips.isConfigValid("$device:$INI_TRIGGER_OFF", r"\OFF.trigger") ||
+       !Snips.isConfigValid("$device:$INI_TRIGGER_OFF", regex = r"OFF\.trigger") ||
        !isfile("$TRIGGER_DIR/$(Snips.getConfig("$device:$INI_TRIGGER_OFF"))")
         Snips.printLog("ERROR: trigger file for device $device missing!")
         return false
     end
-    if (length(Snips.tryParseJSONfile("$TRIGGER_DIR/$(Snips.getConfig("$device:$INI_TRIGGER_ON"))")) < 1) ||
-        (length(Snips.tryParseJSONfile("$TRIGGER_DIR/$(Snips.getConfig("$device:$INI_TRIGGER_OFF"))")) < 1) ||
-        Snips.printLog("ERROR: trigger file for device $device is not valid!")
-        return false
-    end
+    param = "$device:$INI_TRIGGER_ON"
+    json = Snips.tryParseJSONfile("$TRIGGER_DIR/$(Snips.getConfig(param))")
+    Snips.printDebug("Trigger: $json")
 
 
-    if Snips.getConfig("$device:$INI_MODE") == "on"
-        if !checkDubleTime("$device:$INI_TIME")
+    if Snips.getConfig("$device:$INI_MODE") == "once_on"
+        if !checkDubleTime("$device:$INI_TIME_ON")
             Snips.printLog("ERROR: no time for device $device found in config.ini!")
             return false
         end
 
-    elseif Snips.getConfig("$device:$INI_MODE") == "once"
-        if !checkTripleTime("$device:$INI_TIME")
+    elseif Snips.getConfig("$device:$INI_MODE") == "once_on_off"
+        if !checkDubleTime("$device:$INI_TIME_ON") ||
+           !checkDubleTime("$device:$INI_TIME_OFF")
             Snips.printLog("ERROR: no time for device $device found in config.ini!")
             return false
         end
 
-    elseif Snips.getConfig("$device:$INI_MODE") == "random"
-        if !checkTripleTime("$device:$INI_TIME") ||
-           !checkDubleTime("$device:$INI_ON") ||
-           !checkDubleTime("$device:$INI_OFF")
+    elseif Snips.getConfig("$device:$INI_MODE") == "random_series"
+        if !checkTripleTime("$device:$INI_TIME_ON") ||
+           !checkTripleTime("$device:$INI_TIME_OFF") ||
+           !checkDubleTime("$device:$INI_DURATION_ON") ||
+           !checkDubleTime("$device:$INI_DURATION_OFF")
             Snips.printLog("ERROR: no time for device $device found in config.ini!")
             return false
         end
@@ -145,22 +150,22 @@ end
 
 
 
-
-function checkTripleTime(param)
-
-    return Snips.isInConfig(param) &&
-           Snips.getConfig(param) isa AbstactArray &&
-           length(Snips.getConfig(param)) == 3 &&
-           occursin(r"^\d\d:\d\d$", Snips.getConfig(param)[1]) &&
-           occursin(r"^\d\d:\d\d$", Snips.getConfig(param)[2]) &&
-           occursin(r"^\d\d:\d\d$", Snips.getConfig(param)[3])))
-end
+#
+# function checkTripleTime(param)
+#
+#     return Snips.isInConfig(param) &&
+#            Snips.getConfig(param) isa AbstractArray &&
+#            length(Snips.getConfig(param)) == 3 &&
+#            occursin(r"^\d\d:\d\d$", Snips.getConfig(param)[1]) &&
+#            occursin(r"^\d\d:\d\d$", Snips.getConfig(param)[2]) &&
+#            occursin(r"^\d\d:\d\d$", Snips.getConfig(param)[3])
+# end
 
 function checkDubleTime(param)
 
     return Snips.isInConfig(param) &&
-           Snips.getConfig(param) isa AbstactArray &&
-           length(Snips.getConfig(param)) == 3 &&
+           Snips.getConfig(param) isa AbstractArray &&
+           length(Snips.getConfig(param)) == 2 &&
            occursin(r"^\d\d:\d\d$", Snips.getConfig(param)[1]) &&
            occursin(r"^\d\d:\d\d$", Snips.getConfig(param)[2])
 end

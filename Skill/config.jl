@@ -18,7 +18,7 @@ const DEVELOPER_NAME = "andreasdominik"
 Snips.setDeveloperName(DEVELOPER_NAME)
 Snips.setModule(@__MODULE__)
 
-const TRIGGER_DIR ="$(Snips.getAppDir())/Trigger"
+const TRIGGER_DIR ="$(Snips.getAppDir())/Triggers"
 
 # Slots:
 # Name of slots to be extracted from intents:
@@ -29,16 +29,15 @@ const SLOT_DATE = "StartEndDate"
 #
 const INI_DEVICES = "controlled_devices"    # list of devices
 const INI_NAME = "name"                     # postfix: device name with article
-const INI_TIME = "time"                     # postfix: start-, end-, fuzzy-time
-const INI_MODE = "mode"                     # postfix: one of on, once, random
-                                            #    on: only on
-                                            #    once: fuzzy on and off
-                                            #    random: multiple fuzzy on and off
-const INI_ON_TIME = "on_duration"           # postfix: time and fuzzy of on-times
-const INI_OFF = "off_duration"              # postfix: time and fuzzy of off-times
+const INI_TIME_ON = "time_on"               # postfix: start-, fuzzy-time
+const INI_TIME_OFF = "time_off"             # postfix: end-, fuzzy-time
+const INI_MODE = "mode"                     # postfix: one of
+                                            #    once_on, once_on_off, random_series
+const INI_DURATION_ON= "duration_on"        # postfix: time and fuzzy of on-times
+const INI_DURATION_OFF = "duration_off"     # postfix: time and fuzzy of off-times
 const INI_TRIGGER_ON = "trigger_on"         # postfix: filename of trigger
 const INI_TRIGGER_OFF = "trigger_off"       # postfix: filename of trigger
-const INI_TRIGGER = "topic"                 # postfix: filename of trigger
+const INI_TOPIC = "topic"                   # postfix: topic of trigger
 
 #
 # link between actions and intents:
