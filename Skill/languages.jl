@@ -12,7 +12,5 @@ Snips.addText("de", :ask_end, "Soll die Programmierung der Hausautomatisierung g
 Snips.addText("de", :all_deleted, "OK. Alle Programmierungen der Hausautomatisierung sind gelöscht!")
 Snips.addText("de", :continue, "Abbruch. Die Hausautomatisierung wird nicht gelöscht!")
 
-
-
 Snips.addText("de", :i_can, "Ich konnte")
 Snips.addText("de", :not_config, "nicht konfigurieren!")
