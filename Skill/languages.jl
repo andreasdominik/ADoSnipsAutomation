@@ -6,6 +6,13 @@ Snips.addText("de", :until, "bis")
 Snips.addText("de", :ask_device_1, "Soll")
 Snips.addText("de", :ask_device_2, "automatisch gesteuert werden?")
 Snips.addText("de", :skipped, "wird nicht gesteuert")
+Snips.addText("de", :is_on, "Die Hausautomatisierung ist programmiert!")
+
+Snips.addText("de", :ask_end, "Soll die Programmierung der Hausautomatisierung gelöscht werden!")
+Snips.addText("de", :all_deleted, "OK. Alle Programmierungen der Hausautomatisierung sind gelöscht!")
+Snips.addText("de", :continue, "Abbruch. Die Hausautomatisierung wird nicht gelöscht!")
+
+
 
 Snips.addText("de", :i_can, "Ich konnte")
 Snips.addText("de", :not_config, "nicht konfigurieren!")

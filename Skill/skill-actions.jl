@@ -45,17 +45,16 @@ function automateAction(topic, payload)
     for device in Snips.getConfig(INI_DEVICES, multiple=true)
 
         deviceName = Snips.getConfig("$device:$INI_NAME")
-        # if !Snips.askYesOrNo(
-        #    "$(Snips.langText(:ask_device_1)) $deviceName $(Snips.langText(:ask_device_2))")
-        #
-        #    Snips.publishSay("""$deviceName $(Snips.langText(:skipped))""")
+        if !Snips.askYesOrNo(
+           "$(Snips.langText(:ask_device_1)) $deviceName $(Snips.langText(:ask_device_2))")
 
-       # else
+           Snips.publishSay("""$deviceName $(Snips.langText(:skipped))""")
+
+       else
             if !checkDeviceConfig(device)
                 Snips.publishEndSession(:error_device_config)
                 return false
             end
-
 
             if Snips.getConfig("$device:$INI_MODE") == "once_on"
                 scheduleOnDevice(device, startDate, endDate)
@@ -68,38 +67,24 @@ function automateAction(topic, payload)
             if Snips.getConfig("$device:$INI_MODE") == "random_series"
                 scheduleRandomDevice(device, startDate, endDate)
             end
-        # end
+        end
     end
 
-
-
-
-
-
-
-    #
-    # myName = Snips.getConfig(INI_MY_NAME)
-    # if myName == nothing
-    #     Snips.publishEndSession(:noname)
-    #     return false
-    # end
-    #
-    # # get the word to repeat from slot:
-    # #
-    # word = Snips.extractSlotValue(payload, SLOT_WORD)
-    # if word == nothing
-    #     Snips.publishEndSession(:dunno)
-    #     return true
-    # end
-    #
-    # # say who you are:
-    # #
-    # Snips.publishSay(:bravo)
-    Snips.publishEndSession("ende")
+    Snips.publishEndSession(:is_on)
     return false
 end
 
 
+function endAction(topc, payload)
+
+    if !Snips.askYesOrNo(:ask_end)
+        Snips.publishEndSession(:all_deleted)
+        deleteAllfromAutomation()
+    else
+        Snips.publishEndSession(:continue)
+
+    end
+end
 
 #
 #

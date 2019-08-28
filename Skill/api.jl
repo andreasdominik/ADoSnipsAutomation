@@ -168,8 +168,6 @@ function readFuzzyTime(param, planDate)
     ΔMins = Dates.Minute(rand(-fuzzyMins:fuzzyMins))
     onTimeDate = planDateTime + ΔMins + onTimeMins
 
-    Snips.printDebug("Fuzzy: $onTime, $onFuzzy >> $onTimeDate")
-
     return onTimeDate
 end
 
@@ -234,4 +232,10 @@ function updateTrigger!(trigger)
 
     trigger[:time] = "$(Dates.now())"
     trigger[:origin] = "ADoSnipsAutomation"
+end
+
+
+
+function deleteAllfromAutomation()
+    Snips.schedulerDeleteOrigin("ADoSnipsAutomation")
 end
