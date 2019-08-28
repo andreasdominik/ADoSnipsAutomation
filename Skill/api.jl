@@ -11,6 +11,15 @@ function scheduleOnDevice(device, startDate, endDate)
 
     # step days:
     #
+    if Snips.isConfigValid("$device:$INI_EVERY_DAY", regex = r"^[0-9]+$")
+        daystep = tryparse(Int, Snips.getConfig("$device:$INI_EVERY_DAY"))
+        if daystep == nothing
+            daystep = 1
+        end
+    else
+        daystep = 1
+    end
+
     Snips.printLog("Planning schedules for device $device from $startDate to $endDate")
     actions = []
     while planDate <= endDate
@@ -21,7 +30,7 @@ function scheduleOnDevice(device, startDate, endDate)
                                     onDateTime, topic, triggerON))
             Snips.printLog("    ON at $onDateTime")
         end
-        planDate += Dates.Day(1)
+        planDate += Dates.Day(daystep)
     end
 
     if length(actions) > 1

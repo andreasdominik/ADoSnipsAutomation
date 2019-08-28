@@ -29,12 +29,15 @@ const SLOT_DATE = "StartEndDate"
 #
 const INI_DEVICES = "controlled_devices"    # list of devices
 const INI_NAME = "name"                     # postfix: device name with article
+const INI_MODE = "mode"                     # postfix: one of
+const INI_EVERY_DAY = "days"
+
 const INI_TIME_ON = "time_on"               # postfix: start-, fuzzy-time
 const INI_TIME_OFF = "time_off"             # postfix: end-, fuzzy-time
-const INI_MODE = "mode"                     # postfix: one of
                                             #    once_on, once_on_off, random_series
 const INI_DURATION_ON= "duration_on"        # postfix: time and fuzzy of on-times
 const INI_DURATION_OFF = "duration_off"     # postfix: time and fuzzy of off-times
+
 const INI_TRIGGER_ON = "trigger_on"         # postfix: filename of trigger
 const INI_TRIGGER_OFF = "trigger_off"       # postfix: filename of trigger
 const INI_TOPIC = "topic"                   # postfix: topic of trigger
