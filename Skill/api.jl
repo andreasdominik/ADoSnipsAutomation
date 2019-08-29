@@ -25,12 +25,15 @@ function scheduleOnDevice(device, startDate, endDate)
     Snips.printLog("Planning schedules for device $device from $startDate to $endDate")
     actions = []
     while planDate <= endDate
-        onDateTime = readFuzzyTime("$device:$INI_TIME_ON", planDate)
 
-        if (onDateTime > Dates.now())
-            push!(actions, Snips.schedulerMakeAction(
-                                    onDateTime, topic, triggerON))
-            Snips.printLog("    ON  at $onDateTime")
+        for i in 1:length(Snips.getConfig("$device:$INI_TIME_ON"))-1
+
+            onDateTime = readFuzzyTime("$device:$INI_TIME_ON", planDate, i)
+            if (onDateTime > Dates.now())
+                push!(actions, Snips.schedulerMakeAction(
+                                        onDateTime, topic, triggerON))
+                Snips.printLog("    ON  at $onDateTime")
+            end
         end
         planDate += Dates.Day(daystep)
     end
@@ -68,13 +71,19 @@ function scheduleOnOffDevice(device, startDate, endDate)
     Snips.printLog("Planning schedules for device $device from $startDate to $endDate")
     actions = []
     while planDate <= endDate
-        onDateTime = readFuzzyTime("$device:$INI_TIME_ON", planDate)
-        offDateTime = readFuzzyTime("$device:$INI_TIME_OFF", planDate)
 
-        if (onDateTime > Dates.now()) && (onDateTime < offDateTime)
-            push!(actions, Snips.schedulerMakeAction(
-                                    onDateTime, topic, triggerON))
-            Snips.printLog("    ON  at $onDateTime")
+        for i in 1:length(Snips.getConfig("$device:$INI_TIME_ON"))-1
+
+            onDateTime = readFuzzyTime("$device:$INI_TIME_ON", planDate, i)
+
+            if onDateTime > Dates.now()
+                push!(actions, Snips.schedulerMakeAction(
+                                        onDateTime, topic, triggerON))
+                Snips.printLog("    ON  at $onDateTime")
+            end
+        for i in 1:length(Snips.getConfig("$device:$INI_TIME_OFF"))-1
+
+            offDateTime = readFuzzyTime("$device:$INI_TIME_OFF", planDate, i)
 
             push!(actions, Snips.schedulerMakeAction(
                                     offDateTime, topic, triggerOFF))
@@ -151,11 +160,11 @@ Read a time from duble as first +- second
 If returnDateTime == true, an absolute DateTime is returned
 if false,  only HH:MM is returned.
 """
-function readFuzzyTime(param, planDate)
+function readFuzzyTime(param, planDate, i)
 
     times = Snips.getConfig(param)
-    onTime = Dates.Time(times[1])     # time
-    onFuzzy = Dates.Time(times[2])    # fuzzy
+    onTime = Dates.Time(times[i])     # time
+    onFuzzy = Dates.Time(times[end])    # fuzzy
 
     planDateTime = Dates.DateTime(planDate)
     onTimeMins = Dates.value(Dates.Minute(onTime)) +

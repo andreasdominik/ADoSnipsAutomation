@@ -45,29 +45,29 @@ function automateAction(topic, payload)
     for device in Snips.getConfig(INI_DEVICES, multiple=true)
 
         deviceName = Snips.getConfig("$device:$INI_NAME")
-        if !Snips.askYesOrNo(
-           "$(Snips.langText(:ask_device_1)) $deviceName $(Snips.langText(:ask_device_2))")
+        # if !Snips.askYesOrNo(
+        #    "$(Snips.langText(:ask_device_1)) $deviceName $(Snips.langText(:ask_device_2))")
+        #
+        #    Snips.publishSay("""$deviceName $(Snips.langText(:skipped))""")
 
-           Snips.publishSay("""$deviceName $(Snips.langText(:skipped))""")
-
-       else
+       # else
             if !checkDeviceConfig(device)
                 Snips.publishEndSession(:error_device_config)
                 return false
             end
 
-            if Snips.getConfig("$device:$INI_MODE") == "once_on"
+            if Snips.getConfig("$device:$INI_MODE") == "olny_on"
                 scheduleOnDevice(device, startDate, endDate)
             end
 
-            if Snips.getConfig("$device:$INI_MODE") == "once_on_off"
+            if Snips.getConfig("$device:$INI_MODE") == "on_off"
                 scheduleOnOffDevice(device, startDate, endDate)
             end
 
             if Snips.getConfig("$device:$INI_MODE") == "random_series"
                 scheduleRandomDevice(device, startDate, endDate)
             end
-        end
+        # end
     end
 
     Snips.publishEndSession(:is_on)
@@ -118,13 +118,13 @@ function checkDeviceConfig(device)
     Snips.printDebug("Trigger: $json")
 
 
-    if Snips.getConfig("$device:$INI_MODE") == "once_on"
+    if Snips.getConfig("$device:$INI_MODE") == "only_on"
         if !checkDubleTime("$device:$INI_TIME_ON")
             Snips.printLog("ERROR: no time for device $device found in config.ini!")
             return false
         end
 
-    elseif Snips.getConfig("$device:$INI_MODE") == "once_on_off"
+    elseif Snips.getConfig("$device:$INI_MODE") == "on_off"
         if !checkDubleTime("$device:$INI_TIME_ON") ||
            !checkDubleTime("$device:$INI_TIME_OFF")
             Snips.printLog("ERROR: no time for device $device found in config.ini!")
