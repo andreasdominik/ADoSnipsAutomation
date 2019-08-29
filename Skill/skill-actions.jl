@@ -23,7 +23,7 @@ function automateAction(topic, payload)
     # get times for start and end:
     #
     (startDate, endDate) = readDatesFromSlots(payload)
-    if startDate == nothing
+    if (startDate == nothing) || (endDate == nothing)
         Snips.publishEndSession(:error_no_dates)
         return false
     end
@@ -169,7 +169,7 @@ function checkDubleTime(param)
 
     return Snips.isInConfig(param) &&
            Snips.getConfig(param) isa AbstractArray &&
-           length(Snips.getConfig(param)) == 2 &&
+           length(Snips.getConfig(param)) >= 2 &&
            occursin(r"^\d\d:\d\d$", Snips.getConfig(param)[1]) &&
            occursin(r"^\d\d:\d\d$", Snips.getConfig(param)[2])
 end

@@ -81,6 +81,7 @@ function scheduleOnOffDevice(device, startDate, endDate)
                                         onDateTime, topic, triggerON))
                 Snips.printLog("    ON  at $onDateTime")
             end
+        end
         for i in 1:length(Snips.getConfig("$device:$INI_TIME_OFF"))-1
 
             offDateTime = readFuzzyTime("$device:$INI_TIME_OFF", planDate, i)
