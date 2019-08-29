@@ -4,7 +4,7 @@
       "time" : "2019-08-28T11:08:50.469",
       "trigger" : {
         "room" : "default",
-        "device" : "floor_lamp",
+        "device" : "tvlight",
         "onOrOff" : "OFF",
         "settings" : "undefined"
       }
