@@ -54,6 +54,8 @@ const INI_TOPIC = "topic"                   # postfix: topic of trigger
 #
 if LANG == "de"
     Snips.registerIntentAction("AutomateDE", automateAction)
+    Snips.registerIntentAction("AutomateEndDE", endAction)
 else
     Snips.registerIntentAction("AutomateDE", automateAction)
+    Snips.registerIntentAction("AutomateEndDE", endAction)
 end

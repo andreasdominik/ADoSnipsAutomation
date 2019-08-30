@@ -77,7 +77,7 @@ end
 
 function endAction(topc, payload)
 
-    if !Snips.askYesOrNo(:ask_end)
+    if Snips.askYesOrNo(:ask_end)
         Snips.publishEndSession(:all_deleted)
         deleteAllfromAutomation()
     else
