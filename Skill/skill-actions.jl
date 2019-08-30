@@ -56,7 +56,7 @@ function automateAction(topic, payload)
                 return false
             end
 
-            if Snips.getConfig("$device:$INI_MODE") == "olny_on"
+            if Snips.getConfig("$device:$INI_MODE") == "only_on"
                 scheduleOnDevice(device, startDate, endDate)
             end
 
@@ -115,7 +115,7 @@ function checkDeviceConfig(device)
     end
     param = "$device:$INI_TRIGGER_ON"
     json = Snips.tryParseJSONfile("$TRIGGER_DIR/$(Snips.getConfig(param))")
-    Snips.printDebug("Trigger: $json")
+    Snips.printDebug("Check trigger: $json")
 
 
     if Snips.getConfig("$device:$INI_MODE") == "only_on"
