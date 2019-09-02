@@ -1,4 +1,5 @@
 Snips.addText("de", :error_no_dates, "Ich konnte Start- und Enddatum nicht verstehen")
+Snips.addText("de", :error_no_profile, "Ich konnte nicht verstehen, welches Profil ich verwenden soll!")
 Snips.addText("de", :error_no_devices, "Ich konnte die Geräte nicht aus der Konfiguartionsdatei lesen!")
 Snips.addText("de", :error_device_config, "Ich konnte die Geräte nicht konfigurieren!")
 Snips.addText("de", :i_start_from, "Ich starte die Automatisierung am")
@@ -14,3 +15,21 @@ Snips.addText("de", :continue, "Abbruch. Die Hausautomatisierung wird nicht gel�
 
 Snips.addText("de", :i_can, "Ich konnte")
 Snips.addText("de", :not_config, "nicht konfigurieren!")
+
+
+
+Snips.addText("en", :error_no_dates, "I was not able to understand a start or end date")
+Snips.addText("en", :error_no_profile, "I did not recognise a profile to use")
+Snips.addText("en", :error_no_devices, "I was not able to find the devices in the config file")
+Snips.addText("en", :error_device_config, "I was not able to configure the devices")
+Snips.addText("en", :i_start_from, "I will start to control the devices at")
+Snips.addText("en", :until, "until")
+Snips.addText("en", :ask_device_1, "Shall")
+Snips.addText("en", :ask_device_2, "controlled?")
+Snips.addText("en", :skipped, "will not be controlled")
+Snips.addText("en", :is_on, "The automation is scheduled!")
+Snips.addText("en", :ask_end, "Shall I delete all schedules?")
+Snips.addText("en", :all_deleted, "OK. I will delete all schedules")
+Snips.addText("en", :continue, "Exit - the schedules will not be deleted")
+Snips.addText("en", :i_can, "I can")
+Snips.addText("en", :not_config, "not configure!")

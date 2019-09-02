@@ -25,8 +25,16 @@ function automateAction(topic, payload)
     (startDate, endDate) = readDatesFromSlots(payload)
     if (startDate == nothing) || (endDate == nothing)
         Snips.publishEndSession(:error_no_dates)
-        return false
+        return true
     end
+
+    profile = Snips.extractSlotValue(payload, SLOT_PROFILE)
+    if profile == nothing
+        Snips.publishEndSession(:error_no_profile)
+        return true
+    end
+    Snips.setConfigPrefix(profile)
+
     # read config again to refresh configuration:
     #
     Snips.readConfig("$APP_DIR")

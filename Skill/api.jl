@@ -126,11 +126,11 @@ function scheduleRandomDevice(device, startDate, endDate)
     Snips.printLog("Planning schedules for device $device from $startDate to $endDate")
     actions = []
     while planDate <= endDate
-        onDateTime = readFuzzyTime("$device:$INI_TIME_ON", planDate)
-        offDateTime = readFuzzyTime("$device:$INI_TIME_OFF", planDate)
+        onDateTime = readFuzzyTime("$device:$INI_TIME_ON", planDate, 1)
+        offDateTime = readFuzzyTime("$device:$INI_TIME_OFF", planDate, 1)
 
         nextOn = onDateTime
-        nextOff = readFuzzyTime("$device:$INI_DURATION_ON", nextOn)
+        nextOff = readFuzzyTime("$device:$INI_DURATION_ON", nextOn, 1)
 
         while nextOn < offDateTime
             if (nextOn > Dates.now()) && (nextOn < nextOff)
@@ -142,8 +142,8 @@ function scheduleRandomDevice(device, startDate, endDate)
                                         nextOff, topic, triggerOFF))
                 Snips.printLog("    OFF at $nextOff")
             end
-            nextOn = readFuzzyTime("$device:$INI_DURATION_OFF", nextOff)
-            nextOff = readFuzzyTime("$device:$INI_DURATION_ON", nextOn)
+            nextOn = readFuzzyTime("$device:$INI_DURATION_OFF", nextOff, 1)
+            nextOff = readFuzzyTime("$device:$INI_DURATION_ON", nextOn, 1)
         end
         planDate += Dates.Day(daystep)
     end
