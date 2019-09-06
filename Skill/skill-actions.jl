@@ -114,9 +114,9 @@ function checkDeviceConfig(device)
         Snips.printLog("ERROR: no topic for device $device found in config.ini!")
         return false
     end
-    if !Snips.isConfigValid("$device:$INI_TRIGGER_ON", regex = r"ON\.trigger") ||
+    if !Snips.isConfigValid("$device:$INI_TRIGGER_ON", regex = r"\.trigger") ||
        !isfile("$TRIGGER_DIR/$(Snips.getConfig("$device:$INI_TRIGGER_ON"))") ||
-       !Snips.isConfigValid("$device:$INI_TRIGGER_OFF", regex = r"OFF\.trigger") ||
+       !Snips.isConfigValid("$device:$INI_TRIGGER_OFF", regex = r"\.trigger") ||
        !isfile("$TRIGGER_DIR/$(Snips.getConfig("$device:$INI_TRIGGER_OFF"))")
         Snips.printLog("ERROR: trigger file for device $device missing!")
         return false
