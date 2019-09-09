@@ -29,7 +29,7 @@ summer:irrigation:name=my irrigation
 summer:irrigation:mode=only_on
 summer:irrigation:time_on=19:00,00:30
 summer:irrigation:days=2
-summer:irrigation:topic=qnd/trigger/andreasdominik:ADoSnipsIrrigation
+summer:irrigation:topic=qnd/trigger/<developer>:ADoSnipsIrrigation
 summer:irrigation:trigger_on=irrigation.ON.trigger
 summer:irrigation:trigger_off=irrigation.OFF.trigger
 
@@ -42,7 +42,7 @@ summer:small_lanay:time_off=22:00,00:30
 summer:small_lanay:duration_on=00:35,00:10
 summer:small_lanay:duration_off=00:35,00:10
 summer:small_lanay:days=1
-summer:small_lanay:topic=qnd/trigger/andreasdominik:ADoSnipsRollerShutter
+summer:small_lanay:topic=qnd/trigger/>developer>:ADoSnipsRollerShutter
 summer:small_lanay:trigger_on=rollerSmallLanay.CLOSE.trigger
 summer:small_lanay:trigger_off=rollerSmallLanay.OPEN.trigger
 ```
