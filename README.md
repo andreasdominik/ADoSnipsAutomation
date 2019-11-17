@@ -55,7 +55,7 @@ and again between 19:45h and 20:15h.
 **name:** description used in the voice feedback
 
 **mode:** one of
-- `only_on`: only a liste of times for switching-on is given
+- `only_on`: only one list of times for switching-on is given
 - `on_off`: two separate lists for `on` and `off` must be provided
 - `random_series`: `on` and `off` define the range of time in which
    the device is switched on and off randomly, contolled by
