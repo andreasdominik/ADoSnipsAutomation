@@ -24,6 +24,8 @@ const TRIGGER_DIR ="$(Snips.getAppDir())/Triggers"
 # Name of slots to be extracted from intents:
 #
 const SLOT_DATE = "StartEndDate"
+const SLOT_START_DATE = "StartDate"
+const SLOT_END_DATE = "EndDate"
 const SLOT_PROFILE = "Profile"
 
 # name of entry in config.ini:

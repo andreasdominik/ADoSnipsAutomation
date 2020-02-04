@@ -192,7 +192,7 @@ function readDatesFromSlots(payload)
     # date format delivered from Snips:
     #
     dateFormat = Dates.DateFormat("yyyy-mm-dd HH:MM:SS +00:00")
-    times = Snips.extractSlotValue(payload, SLOT_DATE, multiple = true)
+    times = Snips.extractMultiSlotValues(payload, [SLOT_DATE, SLOT_START_DATE, SLOT_END_DATE])
     Snips.printDebug("dates: $times")
 
     # fix timezone in slot:
