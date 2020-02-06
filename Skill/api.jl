@@ -191,7 +191,10 @@ function readDatesFromSlots(payload)
 
     # date format delivered from Snips:
     #
-    dateFormat = Dates.DateFormat("yyyy-mm-dd HH:MM:SS +00:00")
+    # TODO: adapt date foramte to duckling date:
+    # "value": "2020-02-09T00:00:00.000"
+
+    # dateFormat = Dates.DateFormat("yyyy-mm-ddTHH:MM:SS +00:00")
     times = Snips.extractMultiSlotValues(payload, [SLOT_DATE, SLOT_START_DATE, SLOT_END_DATE])
     Snips.printDebug("dates: $times")
 
@@ -199,15 +202,15 @@ function readDatesFromSlots(payload)
     #
     for (i,s) in enumerate(times)
         times[i] = replace(s, r" \+\d\d:\d\d$"=>"")
+        times[i] = replace(s, r"\+\d\d:\d\d$"=>"")
     end
-    Snips.printDebug("dates: $times")
 
     if length(times) == 0
         Snips.printLog("No dates in slot!")
 
     elseif length(times) == 2
-        startDate = Dates.DateTime(times[1], dateFormat)
-        endDate = Dates.DateTime(times[2], dateFormat)
+        startDate = Dates.DateTime(times[1])
+        endDate = Dates.DateTime(times[2])
 
         Snips.printDebug("Dates: $startDate, $endDate")
 
