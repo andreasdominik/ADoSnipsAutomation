@@ -1,0 +1,43 @@
+# Intent definition for Calendar skill
+#
+#  (c) A. Dominik, 2020
+#
+skill = "ADoSnipsAutomation"
+developer = "andreasdominik"
+
+
+[inventory]
+intents = ["AutomateDE", "AutomateEndDE"]
+slots = ["StartDate", "EndDate", "Profile"]
+
+
+# define slots:
+# Types: "Any", "ListOfValues", "Time", "Duration", "Currency", "Number", "Ordinal"
+#
+[StartDate]
+slot_type = "Time"
+
+[EndDate]
+slot_type = "Time"
+
+[Profile]
+slot_type = "ListOfValues"
+
+        [Profile.synonyms]
+        "summer" = ["Sommer"]
+        "winter" = ["Winter"]
+        "irrigation" = "Bewässerung"
+        "sun_shield" = ["Sonnenschutz", "Rollos"]
+
+
+# define phrases for intent recognition:
+# exact, regex, part
+#
+[AutomateDE]
+automate_a_from_to = "partial: <<Bitte|>> <<programmiere|automatisiere>> <<das Haus|die Automatisierung|die Hausautomatisierung|>> von <<StartDate>> bis <<EndDate>> im Profil <<Profile>>"
+automate_b_to = "partial: <<Bitte|>> <programmiere|automatisiere>> <<das Haus|die Automatisierung|die Hausautomatisierung|>> bis <<EndDate>> im Profil <<Profile>>"
+automate_c_from_to = "partial: <<Bitte|>> <programmiere|automatisiere>> <<das Haus|die Automatisierung|die Hausautomatisierung|>> im Profil <<Profile>> von <<StartDate>> bis <<EndDate>>"
+automate_d_to = "partial: <<Bitte|>> <programmiere|automatisiere>> <<das Haus|die Automatisierung|die Hausautomatisierung|>> im Profil <<Profile>> bis <<EndDate>>"
+
+[AutomateEndDE]
+automateEnd_a = "partial: <<Bitte|>> <<beende|lösche>> <<bitte|>> die <<Hausautomatisierung|Hausprogrammierung|Programmierung|Automatisierung>>"
