@@ -31,7 +31,7 @@ slot_type = "ListOfValues"
 
 
 # define phrases for intent recognition:
-# exact, regex, part
+# exact, regex, partial
 #
 [AutomateDE]
 automate_a_from_to = "partial: <<Bitte|>> <<programmiere|automatisiere>> <<das Haus|die Automatisierung|die Hausautomatisierung|>> von <<StartDate>> bis <<EndDate>> im Profil <<Profile>>"
