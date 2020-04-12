@@ -28,6 +28,7 @@ slot_type = "ListOfValues"
         "winter" = ["Winter"]
         "irrigation" = "Bewässerung"
         "sun_shield" = ["Sonnenschutz", "Rollos"]
+        "sun_shield_light" = ["(?:einfacher|kleiner) Sonnenschutz", "ein Rollo"]
 
 
 # define phrases for intent recognition:
