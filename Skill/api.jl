@@ -195,15 +195,12 @@ function readDatesFromSlots(payload)
     # "value": "2020-02-09T00:00:00.000"
 
     # dateFormat = Dates.DateFormat("yyyy-mm-ddTHH:MM:SS +00:00")
-    times = Snips.extractMultiSlotValues(payload, [SLOT_START_DATE, SLOT_END_DATE])
-    Snips.printDebug("dates: $times")
+    slotTimes = Snips.extractMultiSlotValues(payload, [SLOT_START_DATE, SLOT_END_DATE])
+    Snips.printDebug("dates: $slotTimes")
 
     # fix timezone in slot:
     #
-    for (i,s) in enumerate(times)
-        times[i] = replace(s, r" \+\d\d:\d\d$"=>"")
-        times[i] = replace(s, r"\+\d\d:\d\d$"=>"")
-    end
+    times = [replace(s, r" \+\d\d:\d\d$"=>"") for s in slotTimes]
 
     if length(times) == 0
         Snips.printLog("No dates in slot!")
@@ -216,7 +213,7 @@ function readDatesFromSlots(payload)
 
     elseif length(times) == 1
         startDate = Dates.now()
-        endDate = Dates.DateTime(times[1], dateFormat)
+        endDate = Dates.DateTime(times[1])
 
     else # length(times) > 2
          Snips.printLog("More then 2 dates in slot!")
