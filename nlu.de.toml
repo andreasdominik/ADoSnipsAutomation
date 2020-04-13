@@ -7,7 +7,7 @@ developer = "andreasdominik"
 
 
 [inventory]
-intents = ["AutomateDE", "AutomateEndDE"]
+intents = ["Automate", "AutomateEnd"]
 slots = ["StartDate", "EndDate", "Profile"]
 
 
@@ -34,11 +34,11 @@ slot_type = "ListOfValues"
 # define phrases for intent recognition:
 # exact, regex, partial
 #
-[AutomateDE]
+[Automate]
 automate_a_from_to = "partial: <<Bitte|>> <<programmiere|automatisiere>> <<das Haus|die Automatisierung|die Hausautomatisierung|>> von <<StartDate>> bis <<EndDate>> im Profil <<Profile>>"
 automate_b_to = "partial: <<Bitte|>> <programmiere|automatisiere>> <<das Haus|die Automatisierung|die Hausautomatisierung|>> bis <<EndDate>> im Profil <<Profile>>"
 automate_c_from_to = "partial: <<Bitte|>> <programmiere|automatisiere>> <<das Haus|die Automatisierung|die Hausautomatisierung|>> im Profil <<Profile>> von <<StartDate>> bis <<EndDate>>"
 automate_d_to = "partial: <<Bitte|>> <programmiere|automatisiere>> <<das Haus|die Automatisierung|die Hausautomatisierung|>> im Profil <<Profile>> bis <<EndDate>>"
 
-[AutomateEndDE]
+[AutomateEnd]
 automateEnd_a = "partial: <<Bitte|>> <<beende|lösche>> <<bitte|>> die <<Hausautomatisierung|Hausprogrammierung|Programmierung|Automatisierung>>"

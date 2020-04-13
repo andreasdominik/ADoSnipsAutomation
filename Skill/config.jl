@@ -63,12 +63,5 @@ const INI_TOPIC = "topic"                   # postfix: topic of trigger
 #   * if the siteId matches, if site is  defined in config.ini
 #     (such as: "switch TV in room abc").
 #
-# Language-dependent settings:
-#
-if LANG == "de"
-    Snips.registerIntentAction("AutomateDE", automateAction)
-    Snips.registerIntentAction("AutomateEndDE", endAction)
-else
-    Snips.registerIntentAction("AutomateDE", automateAction)
-    Snips.registerIntentAction("AutomateEndDE", endAction)
-end
+Snips.registerIntentAction("Automate", automateAction)
+Snips.registerIntentAction("AutomateEnd", endAction)

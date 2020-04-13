@@ -1,0 +1,42 @@
+# Intent definition for Calendar skill
+#
+#  (c) A. Dominik, 2020
+#
+skill = "ADoSnipsAutomation"
+developer = "andreasdominik"
+
+
+[inventory]
+intents = ["Automate", "AutomateEnd"]
+slots = ["StartDate", "EndDate", "Profile"]
+
+
+# define slots:
+# Types: "Any", "ListOfValues", "Time", "Duration", "Currency", "Number", "Ordinal"
+#
+[StartDate]
+slot_type = "Time"
+
+[EndDate]
+slot_type = "Time"
+
+[Profile]
+slot_type = "ListOfValues"
+
+        [Profile.synonyms]
+        "summer" = ["summer"]
+        "winter" = ["winter"]
+        "irrigation" = "irrigartion"
+        "sun_shield" = ["sun protection", "roller shutter", "roller"]
+        "sun_shield_light" = ["(?:small|light|simple) sun protection", "one roller shutter", "one roller"]
+
+
+# define phrases for intent recognition:
+# exact, regex, partial
+#
+[Automate]
+automate_a_from_to = "partial: <<program|automise>> the house from <<StartDate>> <<to|until>> <<EndDate>> with profil <<Profile>>"
+automate_a_from_to = "partial: <<set|start>> the programming of the house from <<StartDate>> <<to|until>> <<EndDate>> with profil <<Profile>>"
+
+[AutomateEnd]
+automateEnd_a = "partial: <<stop|delete>> the programming of the house"
