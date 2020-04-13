@@ -45,8 +45,8 @@ function automateAction(topic, payload)
         return false
     end
 
-    Snips.publishSay("""$(Snips.langText(:i_start_from)) $(Snips.readableDate(startDate))
-                        $(Snips.langText(:until)) $(Snips.readableDate(endDate))""")
+    Snips.publishSay("$(Snips.langText(:i_start_from)) $(Snips.readableDate(startDate))" *
+                     "$(Snips.langText(:until)) $(Snips.readableDate(endDate))")
 
     # work on all devices
     #
