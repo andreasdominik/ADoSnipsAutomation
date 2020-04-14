@@ -33,11 +33,11 @@ function automateAction(topic, payload)
         Snips.publishEndSession(:error_no_profile)
         return true
     end
-    Snips.setConfigPrefix(profile)
 
     # read config again to refresh configuration:
     #
     Snips.readConfig("$APP_DIR")
+    Snips.setConfigPrefix(profile)
 
     if !Snips.isInConfig(INI_DEVICES)
         Snips.printLog("ERROR: no devices found in config.ini!")
@@ -50,7 +50,10 @@ function automateAction(topic, payload)
 
     # work on all devices
     #
-    for device in Snips.getConfig(INI_DEVICES, multiple=true)
+    devices = Snips.getConfig(INI_DEVICES, multiple=true)
+    Snips.printDebug("controlled devices: $devices")
+    
+    for device in devices
 
         deviceName = Snips.getConfig("$device:$INI_NAME")
         # if !Snips.askYesOrNo(
