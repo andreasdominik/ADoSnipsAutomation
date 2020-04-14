@@ -26,7 +26,7 @@ slot_type = "ListOfValues"
         [Profile.synonyms]
         "summer" = ["Sommer"]
         "winter" = ["Winter"]
-        "irrigation" = "Bewässerung"
+        "irrigation" = ["Bewässerung", "Gartenwasser"]
         "sun_shield" = ["Sonnenschutz", "Rollos"]
         "sun_shield_light" = ["(?:einfacher|kleiner) Sonnenschutz", "ein Rollo"]
 
